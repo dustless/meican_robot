@@ -122,5 +122,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CRONJOBS = [
-    ('* * * * *', "robot.task.job")
+    ('1 16 * * *', "robot.task.job")
 ]
