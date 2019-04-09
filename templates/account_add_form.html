@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>账户添加</title>
+</head>
+<body>
+    <form action="/account/add/" method="post">
+{% for field in form %}
+    <div class="fieldWrapper">
+        {{ field.label_tag }}
+        {{ field }}
+        {{ field.errors }}
+        {{ field.help_text }}
+    </div>
+{% endfor %}
+    <div>
+        <input type="submit" value="添加" />
+    </div>
+    </form>
+</body>
+</html>
