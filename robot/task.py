@@ -51,4 +51,4 @@ def job():
                     break
 
         meican.order(order_dish)
-        print("order dish %s for user %s:" % (like_dishes[0].name, account.username))
+        print("order dish %s for user %s:" % (order_dish.name, account.username))
