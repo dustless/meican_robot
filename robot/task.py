@@ -1,10 +1,13 @@
 # coding: utf-8
 from meican import MeiCan, NoOrderAvailable, MeiCanLoginFail
 
-from robot.models import Account
+from robot.models import Account, Config
 
 
 def job():
+    config = Config.objects.first()
+    if config and not config.enable:
+        return
     accounts = Account.objects.filter(online=True)
 
     def like_or_dislike_dish(dish, keys):
@@ -28,7 +31,7 @@ def job():
             print('今天没有开放点餐或已点过餐了')
             continue
         except MeiCanLoginFail:
-            print('用户名或者密码不正确')
+            print('用户名(%s)或者密码不正确' % account.username)
             continue
 
         like_keys = account.likes.split("|")
