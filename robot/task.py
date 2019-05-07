@@ -1,4 +1,6 @@
 # coding: utf-8
+import random
+
 from meican import MeiCan, NoOrderAvailable, MeiCanLoginFail
 
 from robot.models import Account, Config
@@ -39,16 +41,22 @@ def job():
         like_dishes = [dish for dish in dishes
                        if like_or_dislike_dish(dish, like_keys)]
 
-        # 有喜欢的菜，直接预订第一个 TODO: 按喜好优先级预订
-        order_dish = dishes[0]
+        # 有喜欢的菜，随机预订一个 TODO: 按喜好优先级预订
         if like_dishes:
-            order_dish = like_dishes[0]
-        # 没有喜欢的菜，挑一个不讨厌的就行
+            index = random.randint(0, len(like_dishes) - 1)
+            order_dish = like_dishes[index]
+        # 没有喜欢的菜，随机挑一个不讨厌的就行
         else:
-            for dish in dishes:
-                if not like_or_dislike_dish(dish, dislike_keys):
-                    order_dish = dish
-                    break
+            non_dislike_dishes = \
+                [dish for dish in dishes
+                 if not like_or_dislike_dish(dish, dislike_keys)]
+            if non_dislike_dishes:
+                index = random.randint(0, len(non_dislike_dishes) - 1)
+                order_dish = non_dislike_dishes[index]
+            # 所有的菜都不喜欢，随机定一个
+            else:
+                index = random.randint(0, len(dishes) - 1)
+                order_dish = dishes[index]
 
         meican.order(order_dish)
         print("order dish %s for user %s:" % (order_dish.name, account.username))
